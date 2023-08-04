@@ -11,26 +11,27 @@ public class MemoGame {
         Game game = new Game();
 
         System.out.println("Введите размер поля:");
-        System.out.println("Высота (до 18)");
-        int BOARD_HIGH = scanner.nextInt();
-        System.out.println("Ширина (до 18)");
-        int BOARD_WEIGHT = scanner.nextInt();
+        System.out.println("Высота");
+        int boardHigh = scanner.nextInt();
+        System.out.println("Ширина");
+        int boardWeight = scanner.nextInt();
 
-        game.startGame(BOARD_HIGH, BOARD_WEIGHT);
+        game.startGame(boardHigh, boardWeight);
 
         int cardCount = 0;
         while (true) {
-            SelectedCard selectedCard = consoleInput(BOARD_HIGH, BOARD_WEIGHT);
+            final SelectedCard selectedCard = consoleInput(boardHigh, boardWeight);
             game.openCard(cardCount, selectedCard);
             cardCount++;
             System.out.println("открыта карточка " + cardCount + " " + selectedCard);
 
             if (cardCount == 2) {
                 String s = "";
+
                 while (!s.equals("y")) {
-                    System.out.println("() введите y для продолжения");
-                    System.out.println("() введите n для завершения игры");
-                    System.out.println("() введите b что бы открыть карту");
+                    System.out.println("(y) -> введите y для продолжения");
+                    System.out.println("(n) -> введите n для завершения игры");
+                    System.out.println("(m) -> введите m что бы открыть карту");
                     s = scanner.nextLine();
 
                     switch (s) {
@@ -38,17 +39,17 @@ public class MemoGame {
                             System.out.println("game over");
                             return;
                         }
-                        case "y" -> {
-                        }
-                        case "b" -> {
-                            game.printBoard();
+                        case "m" -> game.printBoard();
+                        case "y" -> System.out.println("Ок, давайте продолжим!");
+                        default -> {
+                            System.out.println("Разве есть такой вариант?");
+                            System.out.println("Попробуй еще раз!");
                         }
                     }
-                    System.out.println("Продолжаем игру");
                 }
+
                 cardCount = 0;
-                System.out.println("Следующий шаг");
-                System.out.println("_".repeat(20));
+                System.out.println("_".repeat(25));
                 game.clearBoard();
             }
         }
@@ -87,4 +88,6 @@ public class MemoGame {
 
         return new SelectedCard(--rowIndex, --columnIndex);
     }
+
+
 }

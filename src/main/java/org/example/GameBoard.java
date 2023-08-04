@@ -1,17 +1,18 @@
 package org.example;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class GameBoard {
+    private static final Logger log = LogManager.getLogger(GameBoard.class);
 
-    int bourdHigh;
-    int boardLength;
+    private final int bourdHigh;
+    private final int boardLength;
 
     public GameBoard(int high, int length) {
         if (!isEven(high)) {
@@ -35,10 +36,10 @@ public class GameBoard {
         int maxCard = (cards[0].length * cards.length) / 2;
 
         if (maxCard > maxPossibleCards) {
-            throw new IllegalArgumentException("Упс, у нас нет столько карточек для заполнения поля. Максимальное количесво карточек " + maxPossibleCards);
+            log.error("Упс, у нас нет столько карточек для заполнения поля. Максимальное количество карточек {}", maxPossibleCards);
         }
 
-        Set<Card> cardList = new HashSet<>(maxCard);
+        final Set<Card> cardList = new HashSet<>(maxCard);
         while (cardList.size() != maxCard) {
             cardList.add(new Card());
         }
@@ -52,7 +53,7 @@ public class GameBoard {
     }
 
     public Card[][] fillEmptyField() {
-        Card[][] emptyField = new Card[bourdHigh][boardLength];
+        final Card[][] emptyField = new Card[bourdHigh][boardLength];
         for (int i = 0; i < emptyField.length; i++) {
             for (int j = 0; j < emptyField[i].length; j++) {
                 emptyField[i][j] = new Card('#');
@@ -63,17 +64,18 @@ public class GameBoard {
     }
 
     public Card[][] openField(Card[][] emptyField, Card[][] cards, int row, int column) {
-        Card[][] arrayCopy = Arrays.copyOf(emptyField, emptyField.length);
+        final Card[][] arrayCopy = Arrays.copyOf(emptyField, emptyField.length);
         arrayCopy[row][column] = cards[row][column];
         return arrayCopy;
     }
 
     private void placeSymbol(Card[][] cards, Card card) {
-        Random random = new Random();
+        final Random random = new Random();
         while (true) {
             int row = random.nextInt(cards.length);
             int column = random.nextInt(cards[0].length);
-            Card cartAtPostion = cards[row][column];
+
+            final Card cartAtPostion = cards[row][column];
             if (cartAtPostion == null) {
                 cards[row][column] = card;
                 return;
@@ -86,61 +88,9 @@ public class GameBoard {
     }
 
     public void printBoard(Card[][] cardBoard) {
-        int cellWidth = 4;
-        System.out.println("------ Memory Game ------");
-
-        // Выводим номера колонок
-        System.out.print(String.format("%" + (cellWidth + 1) + "s", " "));
-        for (int i = 1; i <= cardBoard[0].length; i++) {
-            System.out.print(String.format("%" + cellWidth + "s|", i));
-        }
-        System.out.println();
-
-        for (int i = 0; i < cardBoard.length; i++) {
-            System.out.print(String.format("%" + cellWidth + "d|", i + 1));
-            for (int j = 0; j < cardBoard[0].length; j++) {
-                System.out.print(String.format("%" + cellWidth + "s|", cardBoard[i][j]));
-            }
-            System.out.println();
-        }
-        System.out.println("-------------------------");
+        String boardToString = BoardUtils.boardToString(cardBoard);
+        System.out.println(boardToString);
     }
 
-    public void printBoardToFile(Card[][] cardBoard) {
-        int cellWidth = 4;
-        String dirPath = "games";
-        File folder = new File(dirPath);
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-
-        String fileNameSuffix = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss"));
-        String fileName = fileNameSuffix + "_memogame.txt";
-
-        File file = new File(folder, fileName);
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            writer.println("------ Memory Game ------");
-
-            // Выводим номера колонок
-            writer.print(String.format("%" + (cellWidth + 1) + "s", " "));
-            for (int i = 1; i <= cardBoard[0].length; i++) {
-                writer.print(String.format("%" + cellWidth + "s|", i));
-            }
-            writer.println();
-
-            for (int i = 0; i < cardBoard.length; i++) {
-                writer.print(String.format("%" + cellWidth + "d|", i + 1));
-                for (int j = 0; j < cardBoard[0].length; j++) {
-                    writer.print(String.format("%" + cellWidth + "s|", cardBoard[i][j]));
-                }
-                writer.println();
-            }
-            writer.println("-------------------------");
-
-            System.out.println("Board printed to file: " + fileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
 

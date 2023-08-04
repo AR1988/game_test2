@@ -1,5 +1,7 @@
 package org.example;
 
+import static org.example.FileUtils.printBoardToFile;
+
 public class Game {
 
     private GameBoard gameBoard;
@@ -17,25 +19,29 @@ public class Game {
         gameBoard = new GameBoard(boardHigh, boardLength);
         this.boardToShow = gameBoard.fillFieldWithCards();
         this.fieldWithCards = boardToShow;
-        gameBoard.printBoardToFile(this.boardToShow);
+        printBoardToFile(this.boardToShow);
 
         this.boardToShow = gameBoard.fillEmptyField();
         this.emptyField = boardToShow;
-        printBoard();
 
+        printBoard();
     }
 
-    public void openCard(int cardCount, SelectedCard selectedCard) {
-        this.boardToShow = this.gameBoard.openField(emptyField, fieldWithCards, selectedCard.rowIndex(), selectedCard.columnIndex());
-        Card card = this.boardToShow[selectedCard.rowIndex()][selectedCard.columnIndex()];
+    public void openCard(final int cardCount, final SelectedCard selectedCard) {
+        this.boardToShow = gameBoard.openField(emptyField,
+                fieldWithCards,
+                selectedCard.rowIndex(),
+                selectedCard.columnIndex());
+
+        final Card card = this.boardToShow[selectedCard.rowIndex()][selectedCard.columnIndex()];
         if (cardCount == 0) {
             this.selectedCardFirst = selectedCard;
             this.selectedCardFirst.setCard(card);
-
         } else {
             this.selectedCardSecond = selectedCard;
             this.selectedCardSecond.setCard(card);
         }
+
         printBoard();
     }
 
