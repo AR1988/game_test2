@@ -10,4 +10,6 @@ public class Constants {
 
     public static final String MEMORY_GAME_HEADER = "------ Memory Game ------";
     public static final String MEMORY_GAME_FOOTER = "-------------------------";
+    public static final char EMPTY_FIELD_SYMBOL = '#';
+
 }

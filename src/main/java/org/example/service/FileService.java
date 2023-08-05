@@ -1,7 +1,8 @@
-package org.example;
+package org.example.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.example.Card;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -14,15 +15,15 @@ import java.time.format.DateTimeFormatter;
  * @author Andrej Reutow
  * created on 04.08.2023
  */
-public class FileUtils {
-    private static final Logger log = LogManager.getLogger(FileUtils.class);
+public class FileService {
+    private static final Logger log = LogManager.getLogger(FileService.class);
     private static final String DATA_TIME_FORMAT = "dd-MM-yyyy_HH-mm-ss";
     private static final String FILE_NAME_DELIMITER = "_";
     private static final String FILE_NAME_PREFIX = "_memoryGame.txt";
     private static final String GAME_DIR_NAME = "games";
 
 
-    private FileUtils() {
+    private FileService() {
         throw new IllegalArgumentException("Utility class");
     }
 
@@ -33,7 +34,7 @@ public class FileUtils {
         final File file = new File(folder, fileName);
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            final String boardToString = BoardUtils.boardToString(cardBoard);
+            final String boardToString = BoardService.boardToString(cardBoard);
             writer.print(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATA_TIME_FORMAT.replace("_", " "))));
             writer.println();
             writer.print(boardToString);

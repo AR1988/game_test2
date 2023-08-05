@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Card {
 
-    public static char[] icons = "0123456789абвгдежзийклмнопрстуфхцчшщъыьэюяABCDEFGHIJKLMNOPQRSTUVWXYZАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯabcdefghijklmnopqrstuvwxyzЁё€@".toCharArray();
+    public static char[] icons = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     private final char symbol;
 

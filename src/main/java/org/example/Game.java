@@ -1,34 +1,34 @@
 package org.example;
 
-import static org.example.FileUtils.printBoardToFile;
+import org.example.service.BoardService;
+
+import static org.example.service.BoardService.*;
+import static org.example.service.FileService.printBoardToFile;
 
 public class Game {
 
-    private GameBoard gameBoard;
     private SelectedCard selectedCardFirst;
     private SelectedCard selectedCardSecond;
     private Card[][] emptyField;
     private Card[][] fieldWithCards;
     private Card[][] boardToShow;
 
-    /**
-     * @param boardHigh   высота доски, строки
-     * @param boardLength ширина доски, колонки
-     */
     public void startGame(int boardHigh, int boardLength) {
-        gameBoard = new GameBoard(boardHigh, boardLength);
-        this.boardToShow = gameBoard.fillFieldWithCards();
+        validateDimension(boardHigh, "Высота поля должно быть четным числом");
+        validateDimension(boardLength, "Ширина поля должно быть четным числом");
+
+        this.boardToShow = fillFieldWithCards(boardHigh, boardLength);
         this.fieldWithCards = boardToShow;
         printBoardToFile(this.boardToShow);
 
-        this.boardToShow = gameBoard.fillEmptyField();
+        this.boardToShow = fillEmptyField(boardHigh, boardLength);
         this.emptyField = boardToShow;
 
         printBoard();
     }
 
     public void openCard(final int cardCount, final SelectedCard selectedCard) {
-        this.boardToShow = gameBoard.openField(emptyField,
+        this.boardToShow = openField(emptyField,
                 fieldWithCards,
                 selectedCard.rowIndex(),
                 selectedCard.columnIndex());
@@ -46,7 +46,7 @@ public class Game {
     }
 
     public void printBoard() {
-        gameBoard.printBoard(this.boardToShow);
+        BoardService.printBoard(this.boardToShow);
     }
 
     public void clearBoard() {
