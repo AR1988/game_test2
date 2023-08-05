@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.service.BoardService;
 
+import static org.example.Constants.EMPTY_FIELD_SYMBOL;
 import static org.example.service.BoardService.*;
 import static org.example.service.FileService.printBoardToFile;
 
@@ -14,9 +15,6 @@ public class Game {
     private Card[][] boardToShow;
 
     public void startGame(int boardHigh, int boardLength) {
-        validateDimension(boardHigh, "Высота поля должно быть четным числом");
-        validateDimension(boardLength, "Ширина поля должно быть четным числом");
-
         this.boardToShow = fillFieldWithCards(boardHigh, boardLength);
         this.fieldWithCards = boardToShow;
         printBoardToFile(this.boardToShow);
@@ -64,7 +62,7 @@ public class Game {
     }
 
     private void updateBoard() {
-        this.boardToShow[this.selectedCardFirst.rowIndex()][this.selectedCardFirst.columnIndex()] = new Card('#');
-        this.boardToShow[this.selectedCardSecond.rowIndex()][this.selectedCardSecond.columnIndex()] = new Card('#');
+        this.boardToShow[this.selectedCardFirst.rowIndex()][this.selectedCardFirst.columnIndex()] = new Card(EMPTY_FIELD_SYMBOL);
+        this.boardToShow[this.selectedCardFirst.rowIndex()][this.selectedCardFirst.columnIndex()] = new Card(EMPTY_FIELD_SYMBOL);
     }
 }

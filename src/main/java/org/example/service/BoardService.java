@@ -87,7 +87,6 @@ public class BoardService {
         int row = cardBoard.length;
         int column = cardBoard[0].length;
 
-        buffer.append(String.format("%" + (CELL_WIDTH + 1) + "s", ""));
         for (int i = 1; i <= column; i++) {
             buffer.append(String.format("%" + CELL_WIDTH + "s|", i));
         }
@@ -104,11 +103,5 @@ public class BoardService {
         buffer.append(MEMORY_GAME_FOOTER);
 
         return buffer.toString();
-    }
-
-    public static void validateDimension(int dimension, String errorMessage) {
-        if (dimension % 2 != 0) {
-            throw new IllegalArgumentException(errorMessage);
-        }
     }
 }

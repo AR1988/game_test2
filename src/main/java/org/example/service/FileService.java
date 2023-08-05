@@ -17,9 +17,8 @@ import java.time.format.DateTimeFormatter;
  */
 public class FileService {
     private static final Logger log = LogManager.getLogger(FileService.class);
-    private static final String DATA_TIME_FORMAT = "dd-MM-yyyy_HH-mm-ss";
+    private static final String DATA_TIME_FORMAT = "dd-mm-yyyy_HH-mm-ss";
     private static final String FILE_NAME_DELIMITER = "_";
-    private static final String FILE_NAME_PREFIX = "_memoryGame.txt";
     private static final String GAME_DIR_NAME = "games";
 
 
@@ -60,6 +59,6 @@ public class FileService {
 
     private static String generateFileName() {
         final String fileNamePrefix = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATA_TIME_FORMAT));
-        return fileNamePrefix + FILE_NAME_DELIMITER + FILE_NAME_PREFIX;
+        return fileNamePrefix + FILE_NAME_DELIMITER;
     }
 }
